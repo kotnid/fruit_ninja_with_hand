@@ -6,9 +6,11 @@ from time import time
 
 print("=== starting the device pls wait ===")
 
+
 wCam , hCam = 1920 , 1080
 
 cap = cv2.VideoCapture(0)
+cap.set(cv2.CAP_PROP_FPS, 30)
 cap.set(3 , wCam)
 cap.set(4 , hCam)
 
@@ -22,6 +24,7 @@ end_time = time()+30
 
 while True:
     ret , img = cap.read()
+    img = cv2.flip(img , 1)
     hands , img = detector.findHands(img)
 
     if playing == 0 :
@@ -70,11 +73,11 @@ while True:
                         playsound.playsound('res/coin.mp3', True)
             
             
-                cv2.circle(img , (x_pos,y_pos) , 40 , (0,255,34) , -1)
-                cv2.putText(img , str(marks) , (50,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
+            cv2.circle(img , (x_pos,y_pos) , 40 , (0,255,34) , -1)
+            cv2.putText(img , str(marks) , (50,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
 
             
-                cv2.putText(img , f"time remain : {remain_time}" , (1000,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
+            cv2.putText(img , f"time remain : {remain_time}" , (1000,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
 
     cv2.imshow("Img" , img)
     

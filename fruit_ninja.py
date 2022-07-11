@@ -26,8 +26,12 @@ end_time = time()+30
 y_v = -1000
 x_v = 100
 
-def play_music():
-    playsound.playsound('res/coin.mp3', True)
+fruits = [{"x_v" : 100 , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,255,34) , "size" : 100 ,"name":"watermelon"} , 
+{"x_v" : 100 , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (255,0,0) , "size" : 60 , "name":"apple"},
+{"x_v" : 100 , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,0,0) , "size" : 75 , "name":"bomb"}]
+
+def play_music(path):
+    playsound.playsound(path, True)
 
 while True:
     ret , img = cap.read()
@@ -42,7 +46,7 @@ while True:
             lmList = hands[0]["lmList"]
 
             if len(lmList) > 5:
-                x1 , y1 = lmList[8][0] ,lmList[8][1]
+                x1 , y1 = lmList[12][0] ,lmList[12][1]
                 cv2.circle(img , (x1 , y1) , 30 , (255,0,255) , cv2.FILLED)
                 if (400 <= x1 <= 700) and (400 <= y1 <= 550):
                     playing = 1
@@ -71,32 +75,46 @@ while True:
                 lmList = hands[0]["lmList"]
 
                 if len(lmList) > 5:
-                    x1 , y1 = lmList[8][0] ,lmList[8][1]
+                    x1 , y1 = lmList[12][0] ,lmList[12][1]
                     cv2.circle(img , (x1 , y1) , 30 , (255,0,255) , cv2.FILLED)
 
-                    if abs(x1-x_pos) < 50 and abs(y1-y_pos) < 50:
-                        y_v = -1000
-                        x_v = random.randint(-300,300)
-                        x_pos , y_pos = random.randint(300,500) , 1000
-                        marks += 1 
+                    for fruit in fruits:
+                        if abs(x1-fruit["x_pos"]) < 50 and abs(y1-fruit["y_pos"]) < 50:
+                            fruit["y_v"] = -1000
+                            fruit["y_v"] = random.randint(-300,300)
+                            fruit["x_pos"] , fruit["y_pos"] = random.randint(300,700) , 1000
+                            
+                            if fruit["name"] == "watermelon":
+                                marks += 1
+                                x = threading.Thread(target=play_music , args=["res/coin.mp3"])
+                                x.start()
 
-                        x = threading.Thread(target=play_music)
-                        x.start()
+                            elif fruit["name"] == "apple":
+                                marks += 2
+                                x = threading.Thread(target=play_music , args=["res/coin.mp3"])
+                                x.start()
+                            else:
+                                marks -= 3
+                                x = threading.Thread(target=play_music , args=["res/bomb.mp3"])
+                                x.start()
+
+                            
             
             
-            if x_pos > 2000 or  y_pos > 1100 or x_pos < 0 or y_pos < 0 :
-                y_v = -1000
-                x_v = random.randint(-300,300)
-                x_pos , y_pos = random.randint(300,500) , 1000
+            for fruit in fruits:
+
+                if fruit["x_pos"] > 2000 or  fruit["y_pos"] > 1100 or fruit["x_pos"] < 0 or fruit["y_pos"] < 0 :
+                    fruit["y_v"] = -1000
+                    fruit["x_v"] = random.randint(-300,300)
+                    fruit["x_pos"] , fruit["y_pos"] = random.randint(300,700) , 1000
 
     
-            y_pos += int(y_v *(1/30))
-            x_pos += int(x_v * (1/30))
-            cv2.circle(img , (x_pos,y_pos) , 40 , (0,255,34) , -1)
-            y_v = y_v + 9.81 * 2
-            cv2.putText(img , str(marks) , (50,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
+                fruit["y_pos"] += int(fruit["y_v"] *(1/30))
+                fruit["x_pos"] += int(fruit["x_v"] * (1/30))
+                cv2.circle(img , (fruit["x_pos"],fruit["y_pos"]) , fruit["size"] , fruit["color"] , -1)
+                fruit["y_v"] = fruit["y_v"] + 9.81 * 2
 
-            
+            cv2.putText(img , str(marks) , (50,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
             cv2.putText(img , f"time remain : {remain_time}" , (1000,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
 
     cv2.imshow("Img" , img)

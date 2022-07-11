@@ -26,6 +26,8 @@ end_time = time()+30
 y_v = -1000
 x_v = 100
 
+multipler = 1
+
 fruits = [{"x_v" : 100 , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,255,34) , "size" : 100 ,"name":"watermelon"} , 
 {"x_v" : 100 , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (255,0,0) , "size" : 60 , "name":"apple"},
 {"x_v" : 100 , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,0,0) , "size" : 75 , "name":"bomb"}]
@@ -69,8 +71,12 @@ while True:
                 if (400 <= x1 <= 700) and (400 <= y1 <= 550):
                     playing = 0
                     marks = 0
+                    multipler = 1
                     
         else :
+            if remain_time < 10:
+                multipler = 1.5
+
             if len(hands) > 0:
                 lmList = hands[0]["lmList"]
 
@@ -85,16 +91,16 @@ while True:
                             fruit["x_pos"] , fruit["y_pos"] = random.randint(300,700) , 1000
                             
                             if fruit["name"] == "watermelon":
-                                marks += 1
+                                marks += 1 * multipler 
                                 x = threading.Thread(target=play_music , args=["res/coin.mp3"])
                                 x.start()
 
                             elif fruit["name"] == "apple":
-                                marks += 2
+                                marks += 2 * multipler 
                                 x = threading.Thread(target=play_music , args=["res/coin.mp3"])
                                 x.start()
                             else:
-                                marks -= 3
+                                marks -= 3 * multipler 
                                 x = threading.Thread(target=play_music , args=["res/bomb.mp3"])
                                 x.start()
 
@@ -102,20 +108,24 @@ while True:
             
             
             for fruit in fruits:
+                multipler2 = 1
+
+                if multipler == 1.5:
+                    multipler2 = 1.2
 
                 if fruit["x_pos"] > 2000 or  fruit["y_pos"] > 1100 or fruit["x_pos"] < 0 or fruit["y_pos"] < 0 :
-                    fruit["y_v"] = -1000
-                    fruit["x_v"] = random.randint(-300,300)
+                    fruit["y_v"] = -1000 * multipler2
+                    fruit["x_v"] = random.randint(-300,300) 
                     fruit["x_pos"] , fruit["y_pos"] = random.randint(300,700) , 1000
 
     
                 fruit["y_pos"] += int(fruit["y_v"] *(1/30))
                 fruit["x_pos"] += int(fruit["x_v"] * (1/30))
                 cv2.circle(img , (fruit["x_pos"],fruit["y_pos"]) , fruit["size"] , fruit["color"] , -1)
-                fruit["y_v"] = fruit["y_v"] + 9.81 * 2
+                fruit["y_v"] = fruit["y_v"] + 9.81 * 2 * multipler
 
             cv2.putText(img , str(marks) , (50,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
-            cv2.putText(img , f"time remain : {remain_time}" , (1000,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
+            cv2.putText(img , f"time remain : {remain_time}" , (1000,50) , cv2.FONT_HERSHEY_SIMPLEX , int(1* multipler) , (255,0,0) , 2 ,  cv2.LINE_AA)
 
     cv2.imshow("Img" , img)
     

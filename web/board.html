@@ -6,11 +6,18 @@
     <link rel="stylesheet" href="board.css">
     <script type="text/javascript" src="/eel.js"></script>
 </head>
-<body>
+<body onload="result()">
     <h1 id="title">Hall of Fame</h1>
     <h3 id="intro">Here's the leaderboard</h3>
+    <div id="put">
+        <div class="header">
+            <div class="left">Rank</div>
+            <div class="center">User</div>
+            <div class="right">Score</div>
+        </div>
+    </div>
 
-    <!--<button type="button" onclick="back()">Back</button> -->
+    <input type="button" id="start_btn" onclick="start()" value="Start!">
     
 
     <script type="text/javascript" src="./main.js"></script>

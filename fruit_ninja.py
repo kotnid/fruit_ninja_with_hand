@@ -11,7 +11,7 @@ def play_music(path):
 def run_ninja():
     wCam , hCam = 1920 , 1080
 
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0 , cv2.CAP_DSHOW)
     cap.set(cv2.CAP_PROP_FPS, 30)
     cap.set(3 , wCam)
     cap.set(4 , hCam)
@@ -21,7 +21,6 @@ def run_ninja():
     marks = 0
 
     x_pos , y_pos = random.randint(300,500) , 1000
-    end_time = time()+30
 
     y_v = -1000
     x_v = 100
@@ -32,7 +31,7 @@ def run_ninja():
     {"x_v" : 100 , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,0,255) , "size" : 60 , "name":"apple"},
     {"x_v" : 100 , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,0,0) , "size" : 75 , "name":"bomb"}]
 
-    end_time = time() + 10
+    end_time = time() + 5
 
     while end_time > time():
         ret , img = cap.read()
@@ -92,6 +91,7 @@ def run_ninja():
         cv2.putText(img , f"time remain : {remain_time}" , (1000,50) , cv2.FONT_HERSHEY_SIMPLEX , int(1* multipler) , (255,0,0) , 2 ,  cv2.LINE_AA)
 
         cv2.imshow("Img" , img)
+        cv2.setWindowProperty("Img", cv2.WND_PROP_TOPMOST, 1)
         cv2.waitKey(1)
     
     cv2.destroyAllWindows()

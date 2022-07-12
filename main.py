@@ -8,9 +8,8 @@ def say_something(word):
         result = run_ninja()
         with open("temp.txt" , "a") as f:
             f.write(str(result))
-        eel.start('end.html' , size = (600,400))
-
-        return "recv!"  
+        
+        return result
 
     elif word == "run":
         with open("temp.txt") as f:
@@ -24,4 +23,4 @@ def say_something(word):
 
 eel.init('web')
 
-eel.start('start.html' , size = (600,400))
+eel.start('start.html' , size = (800,600))

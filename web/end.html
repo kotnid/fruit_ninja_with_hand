@@ -3,16 +3,18 @@
 <head>
     <title>Fruit ninja</title>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="end.css">
     <script type="text/javascript" src="/eel.js"></script>
 </head>
 <body onload="run()">
-    <h1>Your score : </h1>
-    <div id="score"></div>
-    <p>enter your name : </p>
+    <h1 id="title">Time's up!</h1>
+    <div id="score">You scored 69 marks!</div>
+    
+    <p id="info">How can we call you?</p>
     <input type="text" id="fname" name="fname">
-    <button type="button" onclick="submit()">submit</button>
-    <button type="button" onclick="start()">play again</button>
-    <button type="button" onclick="board()">Leaderboard</button>
+
+    <button type="button" onclick="board()" id="start">Submit</button>
+    
 
     <script type="text/javascript" src="./main.js"></script>
 </body>

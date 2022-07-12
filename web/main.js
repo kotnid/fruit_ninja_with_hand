@@ -1,19 +1,21 @@
 async function start(){
-    window.open('','_self').close()
+    window.resizeTo(1, 1);
     result = await eel.say_something('start')();
+    window.resizeTo(800, 600);
+    location.href = "end.html"
 }
 
 async function board(){
+    console.log("yo");
     result = await eel.say_something('board')()
     location.href = "board.html"
     console.log(result)
 }
 
 async function run(){
-    console.log("start");
     result = await eel.say_something('run')();
     console.log(result);
-    document.getElementById('score').textContent = result
+    document.getElementById('score').textContent = "You scored " + result +" marks!"
 }
 
 
@@ -22,5 +24,7 @@ async function back(){
 }
 
 async function submit(){
+    console.log("submit");
     location.href = "board.html"
 }
+

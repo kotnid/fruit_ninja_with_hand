@@ -8,7 +8,7 @@ class database():
         self.c = self.conn.cursor()
 
     def get(self):
-        self.c.execute("SELECT name , score FROM data ORDER BY score DESC LIMIT 3")
+        self.c.execute("SELECT name , score FROM data ORDER BY score DESC")
         result = self.c.fetchall()
         print(result)
         return result

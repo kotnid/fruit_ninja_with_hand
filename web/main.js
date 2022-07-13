@@ -67,9 +67,15 @@ async function result(){
         new_score.textContent = score
         new_row.appendChild(new_score)
 
-        var table = document.getElementById("put");
-        table.appendChild(new_row)
-        console.log("run jor");
+        if (i==results.length-1){
+            new_row.style = "background: #FFDAD6;color: #BA1A1A;";
+            var table = document.getElementById("back");
+            table.appendChild(new_row)
+        }else{
+            var table = document.getElementById("front");
+            table.appendChild(new_row)
+        }
+        
     }
     
     

@@ -54,6 +54,7 @@ body , html {
     margin-top: 5%;
     padding: 1%;
     padding-top: 0.5%;
+    padding-left: 2%;
 
     background: #5A5B84;
     border-radius: 30px;
@@ -65,9 +66,6 @@ body , html {
     line-height: 22px;
 
     color: #000000;
-    overflow: auto;
-    overflow-x: hidden;
-
    
 }
 
@@ -99,26 +97,6 @@ body , html {
     text-align: center;
 }
 
-
-.left2{
-    margin-left: 3%;
-    float:left;
-    vertical-align: 4em;
-}
-
-.right2{
-    float:right;
-    margin-right: 3%;
-    vertical-align: 4em;
-}
-
-.center2{
-    margin-left: 38%;
-    text-align: center;
-    vertical-align: 4em;
-    display: inline-block;
-}
-
 #start_btn{
     border-radius: 30px;
     background-color: #5A5B84;
@@ -141,3 +119,13 @@ body , html {
     width: 1px;
   }
   
+#front{
+    height: 85%;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+#back{
+    height: 20%;
+    margin-top : 1%;
+}

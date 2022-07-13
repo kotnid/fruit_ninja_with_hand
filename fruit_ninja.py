@@ -4,6 +4,7 @@ import random
 import playsound
 from time import time 
 import threading
+import cvzone
 
 def play_music(path):
     playsound.playsound(path, True)
@@ -11,7 +12,7 @@ def play_music(path):
 def run_ninja():
     wCam , hCam = 1920 , 1080
 
-    cap = cv2.VideoCapture(0 , cv2.CAP_DSHOW)
+    cap = cv2.VideoCapture(1 , cv2.CAP_DSHOW)
     cap.set(cv2.CAP_PROP_FPS, 30)
     cap.set(3 , wCam)
     cap.set(4 , hCam)
@@ -31,7 +32,19 @@ def run_ninja():
     {"x_v" : 100 , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,0,255) , "size" : 60 , "name":"apple"},
     {"x_v" : 100 , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,0,0) , "size" : 75 , "name":"bomb"}]
 
-    end_time = time() + 5
+    end_time = time() + 35
+
+    while end_time - 30 > time():
+        ret , img = cap.read()
+        img = cv2.flip(img , 1)
+
+        remain_time = int(end_time - 30 - time())
+
+        cv2.putText(img , str(remain_time) , (800,500) , cv2.FONT_HERSHEY_SIMPLEX , 3 , (255,0,0) , 3 ,  cv2.LINE_AA)
+
+        cv2.imshow("Img" , img)
+        cv2.setWindowProperty("Img", cv2.WND_PROP_TOPMOST, 1)
+        cv2.waitKey(1)
 
     while end_time > time():
         ret , img = cap.read()

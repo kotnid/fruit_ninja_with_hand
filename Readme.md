@@ -2,9 +2,7 @@
 
 ## using opencv to detect your hand and cut the fruit xd ##
 
-
 ---
-
 
 ## Setup ##
 - python 3.x

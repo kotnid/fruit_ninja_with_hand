@@ -12,7 +12,7 @@ def play_music(path):
 def run_ninja():
     wCam , hCam = 1920 , 1080
 
-    cap = cv2.VideoCapture(1 , cv2.CAP_DSHOW)
+    cap = cv2.VideoCapture(0 , cv2.CAP_DSHOW)
     cap.set(cv2.CAP_PROP_FPS, 30)
     cap.set(3 , wCam)
     cap.set(4 , hCam)
@@ -64,7 +64,7 @@ def run_ninja():
                 cv2.circle(img , (x1 , y1) , 30 , (255,0,255) , cv2.FILLED)
 
                 for fruit in fruits:
-                    if abs(x1-fruit["x_pos"]) < 50 and abs(y1-fruit["y_pos"]) < 50:
+                    if abs(x1-fruit["x_pos"]) < 70 and abs(y1-fruit["y_pos"]) < 70:
                         fruit["y_v"] = -1000
                         fruit["y_v"] = random.randint(-300,300)
                         fruit["x_pos"] , fruit["y_pos"] = random.randint(300,700) , 1000
@@ -92,7 +92,7 @@ def run_ninja():
             if fruit["x_pos"] > 2000 or  fruit["y_pos"] > 1100 or fruit["x_pos"] < 0 or fruit["y_pos"] < 0 :
                 fruit["y_v"] = -1000 * multipler2
                 fruit["x_v"] = random.randint(-300,300) 
-                fruit["x_pos"] , fruit["y_pos"] = random.randint(300,700) , 1000
+                fruit["x_pos"] , fruit["y_pos"] = random.randint(400,800) , 1000
 
 
             fruit["y_pos"] += int(fruit["y_v"] *(1/30))

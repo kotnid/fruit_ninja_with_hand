@@ -2,9 +2,10 @@ import cv2
 from cvzone.HandTrackingModule import HandDetector
 import random 
 import playsound
-from time import time 
 import threading
 import cvzone
+import sched , time
+
 
 def play_music(path):
     playsound.playsound(path, True)
@@ -21,24 +22,27 @@ def run_ninja():
 
     marks = 0
 
-    x_pos , y_pos = random.randint(300,500) , 1000
+    s = sched.scheduler(time.time , time.sleep)
 
-    y_v = -1000
-    x_v = 100
+    global effect , spawn 
 
     multipler = 1
+    effect = 1
+    spawn = 1 
 
-    fruits = [{"x_v" : 100 , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,255,34) , "size" : 100 ,"name":"watermelon"} , 
-    {"x_v" : 100 , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,0,255) , "size" : 60 , "name":"apple"},
-    {"x_v" : 100 , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,0,0) , "size" : 75 , "name":"bomb"}]
+    
+    fruits = [{"x_v" : random.randint(-300,300)  , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,255,34) , "size" : 100 ,"name":"watermelon"} , 
+    {"x_v" : random.randint(-300,300)  , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,0,255) , "size" : 60 , "name":"apple"},
+    {"x_v" : random.randint(-300,300)  , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,0,0) , "size" : 75 , "name":"bomb"},
+    {"x_v" : random.randint(-300,300)  , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (255,255,0) , "size" : 70 , "name":"x2"}]
 
-    end_time = time() + 35
+    end_time = time.time() + 33
 
-    while end_time - 30 > time():
+    while end_time - 30 > time.time():
         ret , img = cap.read()
         img = cv2.flip(img , 1)
 
-        remain_time = int(end_time - 30 - time())
+        remain_time = int(end_time - 30 - time.time())
 
         cv2.putText(img , str(remain_time) , (800,500) , cv2.FONT_HERSHEY_SIMPLEX , 3 , (255,0,0) , 3 ,  cv2.LINE_AA)
 
@@ -46,12 +50,12 @@ def run_ninja():
         cv2.setWindowProperty("Img", cv2.WND_PROP_TOPMOST, 1)
         cv2.waitKey(1)
 
-    while end_time > time():
+    while end_time > time.time():
         ret , img = cap.read()
         img = cv2.flip(img , 1)
         hands , img = detector.findHands(img)
     
-        remain_time = int(end_time - time())
+        remain_time = int(end_time - time.time())
            
         if remain_time < 10:
             multipler = 1.5
@@ -70,20 +74,47 @@ def run_ninja():
                         fruit["x_pos"] , fruit["y_pos"] = random.randint(300,700) , 1000
                         
                         if fruit["name"] == "watermelon":
-                            marks += 1 * multipler 
+                            marks += 1 * multipler * effect 
                             x = threading.Thread(target=play_music , args=["res/coin.mp3"])
                             x.start()
 
                         elif fruit["name"] == "apple":
-                            marks += 2 * multipler 
+                            marks += 2 * multipler * effect
                             x = threading.Thread(target=play_music , args=["res/coin.mp3"])
                             x.start()
-                        else:
-                            marks -= 3 * multipler 
+
+                        elif fruit["name"] == "bomb":
+                            marks -= 3 * multipler * effect
                             x = threading.Thread(target=play_music , args=["res/bomb.mp3"])
                             x.start()
-            
+
+                        elif fruit["name"] == "x2":
+                            x = threading.Thread(target=play_music , args=["res/x2.mp3"])
+                            x.start()
+
+                            effect = 2 
+                            spawn = 0
+                            
+                            def stop_x2():
+                                global effect
+                                effect = 1
+
+                            def respawn():
+                                global spawn
+                                spawn = 1
+
+                            def job():
+                                s.enter(5 , 1,  stop_x2)
+                                s.enter(random.randint(6 , 11) , 1 ,  respawn )
+                                s.run()
+
+                            threading.Thread(target=job).start()
+
+
         for fruit in fruits:
+            if fruit["name"] == "x2" and spawn == 0 :
+                continue
+
             multipler2 = 1
 
             if multipler == 1.5:
@@ -94,14 +125,27 @@ def run_ninja():
                 fruit["x_v"] = random.randint(-300,300) 
                 fruit["x_pos"] , fruit["y_pos"] = random.randint(400,800) , 1000
 
+                if fruit["name"] == "x2":
+                     if fruit["x_pos"] > 2000 or  fruit["y_pos"] > 1100 or fruit["x_pos"] < 0 or fruit["y_pos"] < -100 :
+                        spawn = 0
+
 
             fruit["y_pos"] += int(fruit["y_v"] *(1/30))
             fruit["x_pos"] += int(fruit["x_v"] * (1/30))
             cv2.circle(img , (fruit["x_pos"],fruit["y_pos"]) , fruit["size"] , fruit["color"] , -1)
             fruit["y_v"] = fruit["y_v"] + 9.81 * 2 * multipler
 
+            if fruit["name"] == "x2":
+                text_size, _ = cv2.getTextSize("x2", cv2.FONT_HERSHEY_SIMPLEX, 2, 2)
+                text_origin = (int(fruit["x_pos"] - text_size[0] / 2), int(fruit["y_pos"] + text_size[1] / 2))
+                cv2.putText(img , "x2" ,  text_origin , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
+
         cv2.putText(img , str(marks) , (50,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
         cv2.putText(img , f"time remain : {remain_time}" , (1000,50) , cv2.FONT_HERSHEY_SIMPLEX , int(1* multipler) , (255,0,0) , 2 ,  cv2.LINE_AA)
+
+        
+        if effect == 2:
+            cv2.putText(img , "x2" , (300,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
 
         cv2.imshow("Img" , img)
         cv2.setWindowProperty("Img", cv2.WND_PROP_TOPMOST, 1)

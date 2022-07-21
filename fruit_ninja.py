@@ -10,7 +10,10 @@ import sched , time
 def play_music(path):
     playsound.playsound(path, True)
 
-def run_ninja():
+def run_ninja(app=None):
+    if app != None:
+        threading.Thread(target= app.recv2 ).start()
+
     wCam , hCam = 1920 , 1080
 
     cap = cv2.VideoCapture(0 , cv2.CAP_DSHOW)
@@ -143,6 +146,11 @@ def run_ninja():
         cv2.putText(img , str(marks) , (50,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
         cv2.putText(img , f"time remain : {remain_time}" , (1000,50) , cv2.FONT_HERSHEY_SIMPLEX , int(1* multipler) , (255,0,0) , 2 ,  cv2.LINE_AA)
 
+        if app != None:
+            app.send(f"score {marks}")
+            enermy_mark = app.mark()
+            cv2.putText(img , f"enermy : {enermy_mark}" , (400,50) , cv2.FONT_HERSHEY_SIMPLEX , int(1* multipler) , (255,0,0) , 2 ,  cv2.LINE_AA)
+
         
         if effect == 2:
             cv2.putText(img , "x2" , (300,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
@@ -153,6 +161,7 @@ def run_ninja():
     
     cv2.destroyAllWindows()
     cap.release()
+    
     
     return marks
  

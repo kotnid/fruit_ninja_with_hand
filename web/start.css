@@ -48,3 +48,21 @@ body , html {
     margin-left: 35.9%;
     margin-top: 25.7%;
 }
+
+#start_btn2{
+    border-radius: 30px;
+    background-color: #5A5B84;
+    font-family: 'Inter' , sans-serif;
+    color: #FFFFFF;
+    
+    width: 179px;
+    height: 50px;
+    margin-left: 38.6%;
+    margin-top: 3.4%;
+    border: 0;
+
+    font-style: normal;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 29px;
+}

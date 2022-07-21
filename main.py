@@ -2,6 +2,8 @@ import eel
 from fruit_ninja import run_ninja
 from database import database
 from os import remove 
+from Socket import Connection
+import random
 
 @eel.expose
 def say_something(word):
@@ -43,9 +45,18 @@ def say_something(word):
         print(data_list)
         return data_list
 
+    elif word[0] == "connect":
+        app = Connection()
+        print("finish running")
+        result = run_ninja(app)
+        app.end()
+        with open("temp.txt" , "w") as f:
+            f.write(str(result))
+        
+        return result
 
 database = database()
 
 eel.init('web')
 
-eel.start('start.html' , size = (800,600))
+eel.start('start.html' , size = (800,600) , port=random.randint(7000,8000))

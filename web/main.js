@@ -80,3 +80,10 @@ async function result(){
     
     
 }
+
+async function start2(){
+    location.href = "test.html";
+    results = await eel.say_something(['connect'])();
+    window.resizeTo(800, 600);
+    location.href = "end.html"
+}

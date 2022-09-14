@@ -6,14 +6,10 @@ import threading
 import cvzone
 import sched , time
 
-
 def play_music(path):
     playsound.playsound(path, True)
 
-def run_ninja(app=None):
-    if app != None:
-        threading.Thread(target= app.recv2 ).start()
-
+def run_ninja(id=None , database = None):
     wCam , hCam = 1920 , 1080
 
     cap = cv2.VideoCapture(0 , cv2.CAP_DSHOW)
@@ -39,7 +35,8 @@ def run_ninja(app=None):
     {"x_v" : random.randint(-300,300)  , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,0,0) , "size" : 75 , "name":"bomb"},
     {"x_v" : random.randint(-300,300)  , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (255,255,0) , "size" : 70 , "name":"x2"}]
 
-    end_time = time.time() + 33
+    end_time = time.time() + 10
+    buffer_time = time.time()
 
     while end_time - 30 > time.time():
         ret , img = cap.read()
@@ -146,9 +143,11 @@ def run_ninja(app=None):
         cv2.putText(img , str(marks) , (50,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
         cv2.putText(img , f"time remain : {remain_time}" , (1000,50) , cv2.FONT_HERSHEY_SIMPLEX , int(1* multipler) , (255,0,0) , 2 ,  cv2.LINE_AA)
 
-        if app != None:
-            app.send(f"score {marks}")
-            enermy_mark = app.mark()
+        
+        if id != None:
+            if buffer_time < time.time() :
+                enermy_mark = database.update(float(marks),id)
+                buffer_time = time.time()+1
             cv2.putText(img , f"enermy : {enermy_mark}" , (400,50) , cv2.FONT_HERSHEY_SIMPLEX , int(1* multipler) , (255,0,0) , 2 ,  cv2.LINE_AA)
 
         

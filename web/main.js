@@ -27,6 +27,11 @@ async function back(){
     location.href = "start.html"
 }
 
+async function back2(){
+    result = await eel.say_something(['close',num])();
+    location.href = "start.html"
+}
+
 async function submit(){
     console.log("submit");
     location.href = "board.html"
@@ -82,8 +87,11 @@ async function result(){
 }
 
 async function start2(){
-    location.href = "test.html";
-    results = await eel.say_something(['connect'])();
+    var num = prompt("Enter the num");
+    //location.href = "test.html";
+   
+    results = await eel.say_something(['connect',num])();
+    results2 = await eel.say_something(['close',num])();
     window.resizeTo(800, 600);
     location.href = "end.html"
 }

@@ -1,6 +1,6 @@
 import eel 
 from fruit_ninja import run_ninja
-from database import database
+from database2 import database
 from os import remove 
 from Socket import Connection
 import random
@@ -38,22 +38,36 @@ def say_something(word):
 
         remove("temp.txt")
         remove("temp2.txt")
+        
+        
+        user_list = (database.find(result),result2,result)
+        data_list2 = database.get()
+        data_list = []
 
-        user_list = (database.find(result)[0],result2,result)
-        data_list = database.get()
+        for doc in data_list2:
+            doc = doc.to_dict()
+            data_list.append((doc['name'] , doc['score']))
+
         data_list.append(user_list)
-        print(data_list)
+        #print(data_list) 
         return data_list
 
     elif word[0] == "connect":
-        app = Connection()
-        print("finish running")
-        result = run_ninja(app)
-        app.end()
+        print(word[1])
+        id = database.search(word[1])
+        result = run_ninja(id = id , database = database)
+        
+        
         with open("temp.txt" , "w") as f:
             f.write(str(result))
         
+        database.remove(id)
         return result
+    
+    elif word[0] == "close":
+        database.close(word[1])
+        print("close")
+        return True
 
 database = database()
 

@@ -9,18 +9,18 @@ class Connection():
         self.initSocket()
     
     def initSocket(self):
-        self.status == 0
+        self.status = 0
         self.s = socket.socket(socket.AF_INET , socket.SOCK_DGRAM)
         try:
-            self.s.bind(('127.0.0.1', 8001))
+            self.s.bind(('172.16.123.251', 8001))
             print("connected to port 8001")
             self.src_port = 8001
             self.dst_port = 8081
 
         except:
-            self.s.bind(('127.0.0.1', 8081))
+            self.s.bind(('172.16.123.251', 8081))
             print("connected to port 8081")
-            self.s.sendto("handshake".encode(),('127.0.0.1' , 8001))
+            self.s.sendto("handshake".encode(),('172.16.123.251' , 8001))
             self.src_port = 8081
             self.dst_port = 8001
         
@@ -52,7 +52,7 @@ class Connection():
 
 
     def send(self , text):
-        self.s.sendto(text.encode(),('127.0.0.1',self.dst_port))
+        self.s.sendto(text.encode(),('172.16.123.251',self.dst_port))
 
     def mark(self):
         return self.enemy_marks

@@ -4,6 +4,10 @@
 
 ---
 
+## Update ##
+- Switch database from sqlite to firebase 
+- Add multiplayer func 
+
 ## Setup ##
 - python 3.x
 - pip install -r requirements.txt

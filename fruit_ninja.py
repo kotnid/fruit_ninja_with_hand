@@ -249,7 +249,7 @@ def run_ninja(id=None , database = None):
         cv2.imshow("Img" , img)
         cv2.setWindowProperty("Img", cv2.WND_PROP_TOPMOST, 1)
         cv2.waitKey(1)
-    
+
     cv2.destroyAllWindows()
     cap.release()
     

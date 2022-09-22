@@ -100,6 +100,13 @@ async function result(){
          
         var new_row = document.createElement('div');
         new_row.className = "header"
+        if (i==0){
+            new_row.className += " no1";
+        }else if (i==1){
+            new_row.className += " no2";
+        }else if (i==2){
+            new_row.className += " no3";
+        }
         
         var new_rank = document.createElement('div');
         new_rank.className = "left"

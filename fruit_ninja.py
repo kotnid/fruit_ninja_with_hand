@@ -5,8 +5,6 @@ import playsound
 import threading
 import cvzone
 import sched , time
-from PIL import ImageFont, ImageDraw, Image
-import numpy as np
 
 def play_music(path):
     playsound.playsound(path, True)
@@ -42,8 +40,6 @@ def run_ninja(id=None , database = None):
 
     track_list_x = []
     track_list_y = []
-
-    font = ImageFont.truetype("res\Inter-Light.ttf", 18)
 
     while end_time - 30 > time.time():
         ret , img = cap.read(cv2.IMREAD_UNCHANGED)
@@ -230,7 +226,7 @@ def run_ninja(id=None , database = None):
             cv2.line(img , (650,100), (700+int((img.shape[1]-1000) * remain_time/30),100), (132,91,90), 5) 
 
         num = 2
-        
+
         if id != None:
             if buffer_time < time.time() :
                 enermy_mark = database.update(float(marks),id)

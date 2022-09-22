@@ -5,6 +5,7 @@ import playsound
 import threading
 import cvzone
 import sched , time
+from PIL import ImageFont, ImageDraw, Image
 import numpy as np
 
 def play_music(path):
@@ -42,13 +43,18 @@ def run_ninja(id=None , database = None):
     track_list_x = []
     track_list_y = []
 
+    font = ImageFont.truetype("res\Inter-Light.ttf", 18)
+
     while end_time - 30 > time.time():
         ret , img = cap.read(cv2.IMREAD_UNCHANGED)
         img = cv2.flip(img , 1)
 
-        remain_time = int(end_time - 30 - time.time())
+        remain_time = (end_time - 30 - time.time())
 
-        cv2.putText(img , str(remain_time) , (800,500) , cv2.FONT_HERSHEY_SIMPLEX , 3 , (255,0,0) , 3 ,  cv2.LINE_AA)
+        # draw = ImageDraw.Draw(img)
+        # draw.text((500, 400),  str(remain_time), font = font, fill = (255,0,0,0))
+        # img = np.array(img)
+        cv2.putText(img , str(round(remain_time,1)) , (int(img.shape[1]/2 - 250),int(img.shape[0]/2)) , cv2.FONT_HERSHEY_SIMPLEX , 5 , (132,91,90) , 7 ,  cv2.LINE_AA)
 
         cv2.imshow("Img" , img)
         cv2.setWindowProperty("Img", cv2.WND_PROP_TOPMOST, 1)
@@ -60,7 +66,21 @@ def run_ninja(id=None , database = None):
         hands , img = detector.findHands(img)
     
         remain_time = int(end_time - time.time())
-           
+        
+        try:
+            track_list_x.insert(0 , x1)
+            track_list_y.insert(0 , y1)
+        except:
+            pass
+
+        if len(track_list_x) > 20:
+            track_list_x.pop()
+            track_list_y.pop()
+
+        for x in range(len(track_list_x)-1):
+            cv2.line(img, (track_list_x[x] , track_list_y[x]), (track_list_x[x+1] , track_list_y[x+1]) , (255,0,255), len(track_list_x)-x)
+            # cv2.circle(img , (track_list_x[x] , track_list_y[x]) , len(track_list_x)-x , (255,0,255) , cv2.FILLED)
+
         if remain_time < 10:
             multipler = 1.5
 
@@ -186,31 +206,49 @@ def run_ninja(id=None , database = None):
             if fruit["y_v"] > 0:
                 s_img = cv2.rotate(s_img , cv2.ROTATE_180)
 
-            y1, y2 = y_offset, y_offset + s_img.shape[0]
-            x1, x2 = x_offset, x_offset + s_img.shape[1]
+            y11, y12 = y_offset, y_offset + s_img.shape[0]
+            x11, x12 = x_offset, x_offset + s_img.shape[1]
 
             alpha_s = s_img[:, :, 3] / 255.0
             alpha_l = 1.0 - alpha_s
 
             for c in range(0, 3):
                 try:
-                    img[y1:y2, x1:x2, c] = (alpha_s * s_img[:, :, c] +
-                                        alpha_l * img[y1:y2, x1:x2, c])
+                    img[y11:y12, x11:x12, c] = (alpha_s * s_img[:, :, c] +
+                                        alpha_l * img[y11:y12, x11:x12, c])
                 except:
                     pass
             
-        cv2.putText(img , str(marks) , (50,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
-        cv2.putText(img , f"time remain : {remain_time}" , (1000,50) , cv2.FONT_HERSHEY_SIMPLEX , int(1* multipler) , (255,0,0) , 2 ,  cv2.LINE_AA)
+        
+
+        cv2.line(img , (650,100), (img.shape[1]-300,100), (6,6,7), 6) 
+        if remain_time < 10:
+            cv2.putText(img , str(remain_time) , (650,70) , cv2.FONT_HERSHEY_SIMPLEX , 2 , (57,41,237) , 3 ,  cv2.LINE_AA)
+            cv2.line(img , (650,100), (700+int((img.shape[1]-1000) * remain_time/30),100), (57,41,237), 5) 
+        else:
+            cv2.putText(img , str(remain_time) , (650,70) , cv2.FONT_HERSHEY_SIMPLEX , 2 , (132,91,90) , 3 ,  cv2.LINE_AA)
+            cv2.line(img , (650,100), (700+int((img.shape[1]-1000) * remain_time/30),100), (132,91,90), 5) 
 
         if id != None:
             if buffer_time < time.time() :
                 enermy_mark = database.update(float(marks),id)
                 buffer_time = time.time()+1
-            cv2.putText(img , f"enemy : {enermy_mark}" , (400,50) , cv2.FONT_HERSHEY_SIMPLEX , int(1* multipler) , (255,0,0) , 2 ,  cv2.LINE_AA)
 
+        enermy_mark = 10
+
+        cv2.putText(img , f"enemy : " , (70,140) , cv2.FONT_HERSHEY_SIMPLEX , 2, (149,0,246) , 3 ,  cv2.LINE_AA)
+
+        if (enermy_mark > marks):
+            cv2.putText(img , str(enermy_mark) ,  (320,140) , cv2.FONT_HERSHEY_SIMPLEX ,2.5, (149,0,246) , 3 ,  cv2.LINE_AA)
+            num = 2
+        else :
+            cv2.putText(img , str(enermy_mark) ,  (320,140) , cv2.FONT_HERSHEY_SIMPLEX , 2, (149,0,246) , 3 ,  cv2.LINE_AA)
+            num = 2.5
         
+        cv2.putText(img , "You : ", (70,70) , cv2.FONT_HERSHEY_SIMPLEX , 2, (149,0,246) , 3 ,  cv2.LINE_AA)
+        cv2.putText(img , str(marks) ,  (280,70) , cv2.FONT_HERSHEY_SIMPLEX , num, (149,0,246) , 3 ,  cv2.LINE_AA)
         if effect == 2:
-            cv2.putText(img , "x2" , (300,50) , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
+            cv2.putText(img , "x2" , (1100,200) , cv2.FONT_HERSHEY_SIMPLEX , 2, (57,41,237) , 3 ,  cv2.LINE_AA)
 
         cv2.imshow("Img" , img)
         cv2.setWindowProperty("Img", cv2.WND_PROP_TOPMOST, 1)

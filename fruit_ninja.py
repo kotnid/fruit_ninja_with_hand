@@ -36,7 +36,7 @@ def run_ninja(id=None , database = None):
     {"x_v" : random.randint(-300,300)  , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,0,0) , "size" : 75 , "name":"bomb"},
     {"x_v" : random.randint(-300,300)  , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (255,255,0) , "size" : 70 , "name":"x2"}]
 
-    end_time = time.time() + 3
+    end_time = time.time() + 33
     buffer_time = time.time()
 
     while end_time - 30 > time.time():
@@ -121,7 +121,7 @@ def run_ninja(id=None , database = None):
             if multipler == 1.5:
                 multipler2 = 1.2
 
-            if fruit["x_pos"] > 2000 or  fruit["y_pos"] > 1100 or fruit["x_pos"] < 0 or fruit["y_pos"] < 0 :
+            if fruit["x_pos"] > 2200 or  fruit["y_pos"] > 1100 or fruit["x_pos"] < 0 or fruit["y_pos"] < 0 :
                 fruit["y_v"] = -1000 * multipler2
                 fruit["x_v"] = random.randint(-300,300) 
                 fruit["x_pos"] , fruit["y_pos"] = random.randint(400,800) , 1000
@@ -168,7 +168,9 @@ def run_ninja(id=None , database = None):
                 # text_origin = (int(fruit["x_pos"] - text_size[0] // 2), int(fruit["y_pos"] + text_size[1] // 2))
                 # cv2.putText(img , "+1" ,  text_origin , cv2.FONT_HERSHEY_SIMPLEX , 1, (255,0,0) , 2 ,  cv2.LINE_AA)
 
-            
+            if fruit["y_v"] > 0:
+                s_img = cv2.rotate(s_img , cv2.ROTATE_180)
+
             y1, y2 = y_offset, y_offset + s_img.shape[0]
             x1, x2 = x_offset, x_offset + s_img.shape[1]
 

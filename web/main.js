@@ -1,15 +1,36 @@
+var results ;
+
 async function start(){
     window.resizeTo(1, 1);
     result = await eel.say_something(['start'])();
     window.resizeTo(800, 600);
-    location.href = "end.html"
+    
+    var url = new URL(window.location.origin+"/end.html");
+    console.log(result);
+    url.searchParams.append("score", result);
+    //url.searchParams.append("e_score", 5.5);
+    console.log(url);
+    location.href = url;
 }
 
 async function board(){
+    console.log(window.location.href);
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const score = urlParams.get('score');
+    const name = document.getElementById("fname").value;
+
     console.log(document.getElementById("fname").value);
     if (document.getElementById("fname").value != ""){
-        location.href = "board.html"
-        result = await eel.say_something(['add',document.getElementById("fname").value])()
+        result = await eel.say_something(['add',document.getElementById("fname").value, score])();
+        var url = new URL(window.location.origin+"/board.html");
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        
+        url.searchParams.append("score", score);
+        url.searchParams.append("name", name);
+        location.href = url;
     }else{
         alert("incorrect information , pls enter again!")
     }
@@ -17,9 +38,19 @@ async function board(){
 }
 
 async function run(){
-    result = await eel.say_something(['run'])();
-    console.log(result);
-    document.getElementById('score').textContent = "You scored " + result +" marks!"
+    console.log(window.location.href);
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const score = urlParams.get('score');
+    console.log(score);
+   
+    if (urlParams.has('e_score')){
+        const e_score = urlParams.get('e_score');
+        document.getElementById('score2').textContent = "Your enemy scored " + e_score +" marks!";
+    }
+
+    document.getElementById('score').textContent = "You scored " + score +" marks!";
+    
 }
 
 
@@ -34,12 +65,25 @@ async function back2(){
 
 async function submit(){
     console.log("submit");
-    location.href = "board.html"
+    var url = new URL(window.location.origin+"/board.html");
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const score = urlParams.get('score');
+    const name = urlParams.get('name');
+
+    url.searchParams.append("score", score);
+    url.searchParams.append("name", name);
+    location.href = url;
 }
 
 
 async function result(){
-    results = await eel.say_something(['board'])();
+    console.log(window.location.href);
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    results = await eel.say_something(['board',urlParams.get('score'),urlParams.get('name')])();
     
     for (let i=0 ; i <= results.length-1 ; i++){
         console.log(i)
@@ -90,8 +134,13 @@ async function start2(){
     var num = prompt("Enter the num");
     //location.href = "test.html";
    
-    results = await eel.say_something(['connect',num])();
+    results , enemy_result = await eel.say_something(['connect',num])();
     results2 = await eel.say_something(['close',num])();
     window.resizeTo(800, 600);
-    location.href = "end.html"
+
+    var url = new URL(window.location.origin+"/end.html");
+    url.searchParams.append("score", results);
+    url.searchParams.append("e_score", enemy_result);
+    console.log(url);
+    location.href = url;
 }

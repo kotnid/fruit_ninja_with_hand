@@ -36,7 +36,7 @@ def run_ninja(id=None , database = None):
     {"x_v" : random.randint(-300,300)  , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (0,0,0) , "size" : 75 , "name":"bomb"},
     {"x_v" : random.randint(-300,300)  , "y_v" : -1000 , "x_pos" : random.randint(300,700) , "y_pos" : 1000 , "color" : (255,255,0) , "size" : 70 , "name":"x2"}]
 
-    end_time = time.time() + 33
+    end_time = time.time() + 3
     buffer_time = time.time()
 
     while end_time - 30 > time.time():
@@ -202,7 +202,9 @@ def run_ninja(id=None , database = None):
     cv2.destroyAllWindows()
     cap.release()
     
-    
+    if id != None:
+        return marks, enermy_mark
+
     return marks
  
 if __name__ == "__main__":

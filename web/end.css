@@ -29,7 +29,7 @@ body , html {
     color: #08006C;
 }
 
-#score{
+#score , #score2{
     text-align: center;
 
     font-family: 'Inter';
@@ -75,7 +75,7 @@ body , html {
 }
 
 #start{
-    margin-top: 18%;
+    margin-top: 13%;
     margin-left: 41%;
     width: 179px;
     height: 50px;

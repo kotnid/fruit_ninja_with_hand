@@ -229,21 +229,21 @@ def run_ninja(id=None , database = None):
             cv2.putText(img , str(remain_time) , (650,70) , cv2.FONT_HERSHEY_SIMPLEX , 2 , (132,91,90) , 3 ,  cv2.LINE_AA)
             cv2.line(img , (650,100), (700+int((img.shape[1]-1000) * remain_time/30),100), (132,91,90), 5) 
 
+        num = 2
+        
         if id != None:
             if buffer_time < time.time() :
                 enermy_mark = database.update(float(marks),id)
                 buffer_time = time.time()+1
 
-        enermy_mark = 10
+            cv2.putText(img , f"enemy : " , (70,140) , cv2.FONT_HERSHEY_SIMPLEX , 2, (149,0,246) , 3 ,  cv2.LINE_AA)
 
-        cv2.putText(img , f"enemy : " , (70,140) , cv2.FONT_HERSHEY_SIMPLEX , 2, (149,0,246) , 3 ,  cv2.LINE_AA)
-
-        if (enermy_mark > marks):
-            cv2.putText(img , str(enermy_mark) ,  (320,140) , cv2.FONT_HERSHEY_SIMPLEX ,2.5, (149,0,246) , 3 ,  cv2.LINE_AA)
-            num = 2
-        else :
-            cv2.putText(img , str(enermy_mark) ,  (320,140) , cv2.FONT_HERSHEY_SIMPLEX , 2, (149,0,246) , 3 ,  cv2.LINE_AA)
-            num = 2.5
+            if (enermy_mark > marks):
+                cv2.putText(img , str(enermy_mark) ,  (320,140) , cv2.FONT_HERSHEY_SIMPLEX ,2.5, (149,0,246) , 3 ,  cv2.LINE_AA)
+                num = 2
+            else :
+                cv2.putText(img , str(enermy_mark) ,  (320,140) , cv2.FONT_HERSHEY_SIMPLEX , 2, (149,0,246) , 3 ,  cv2.LINE_AA)
+                num = 2.5
         
         cv2.putText(img , "You : ", (70,70) , cv2.FONT_HERSHEY_SIMPLEX , 2, (149,0,246) , 3 ,  cv2.LINE_AA)
         cv2.putText(img , str(marks) ,  (280,70) , cv2.FONT_HERSHEY_SIMPLEX , num, (149,0,246) , 3 ,  cv2.LINE_AA)

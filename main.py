@@ -2,8 +2,6 @@ import eel
 from fruit_ninja import run_ninja
 from database2 import database
 from os import remove 
-from Socket import Connection
-import random
 
 @eel.expose
 def say_something(word):
@@ -72,4 +70,4 @@ database = database()
 
 eel.init('web')
 
-eel.start('start.html' , size = (800,600) , port=random.randint(7000,8000))
+eel.start('start.html' , size = (800,600))

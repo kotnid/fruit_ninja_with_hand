@@ -4,6 +4,7 @@ from firebase_admin import firestore
 import secrets
 import datetime 
 from time import sleep
+
 class database():
     def __init__(self):
         cred = credentials.Certificate("serviceAccountKey.json")

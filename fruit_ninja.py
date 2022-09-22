@@ -39,6 +39,9 @@ def run_ninja(id=None , database = None):
     end_time = time.time() + 33
     buffer_time = time.time()
 
+    track_list_x = []
+    track_list_y = []
+
     while end_time - 30 > time.time():
         ret , img = cap.read(cv2.IMREAD_UNCHANGED)
         img = cv2.flip(img , 1)
@@ -66,6 +69,18 @@ def run_ninja(id=None , database = None):
 
             if len(lmList) > 5:
                 x1 , y1 = lmList[8][0] ,lmList[8][1]
+
+                track_list_x.insert(0 , x1)
+                track_list_y.insert(0 , y1)
+
+                if len(track_list_x) > 20:
+                    track_list_x.pop()
+                    track_list_y.pop()
+
+                for x in range(len(track_list_x)-1):
+                    cv2.line(img, (track_list_x[x] , track_list_y[x]), (track_list_x[x+1] , track_list_y[x+1]) , (255,0,255), len(track_list_x)-x)
+                    # cv2.circle(img , (track_list_x[x] , track_list_y[x]) , len(track_list_x)-x , (255,0,255) , cv2.FILLED)
+
                 cv2.circle(img , (x1 , y1) , 30 , (255,0,255) , cv2.FILLED)
 
                 for fruit in fruits:

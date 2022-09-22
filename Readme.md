@@ -12,4 +12,4 @@
 - python 3.x
 - pip install -r requirements.txt
 - python main.py
-
+- Add serviceAccountKey.json (Firebase)

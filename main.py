@@ -57,7 +57,6 @@ def say_something(word):
         id = database.search(word[1])
         result = run_ninja(id = id , database = database)
         
-        
         with open("temp.txt" , "w") as f:
             f.write(str(result))
         

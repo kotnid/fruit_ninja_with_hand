@@ -69,7 +69,7 @@ def run_ninja(id=None , database = None):
                 cv2.circle(img , (x1 , y1) , 30 , (255,0,255) , cv2.FILLED)
 
                 for fruit in fruits:
-                    if abs(x1-fruit["x_pos"]) < 70 and abs(y1-fruit["y_pos"]) < 70:
+                    if abs(x1-fruit["x_pos"]) < 120 and abs(y1-fruit["y_pos"]) < 120:
                         fruit["y_v"] = -1000
                         fruit["y_v"] = random.randint(-300,300)
                         fruit["x_pos"] , fruit["y_pos"] = random.randint(300,700) , 1000
@@ -121,10 +121,10 @@ def run_ninja(id=None , database = None):
             if multipler == 1.5:
                 multipler2 = 1.2
 
-            if fruit["x_pos"] > 2200 or  fruit["y_pos"] > 1100 or fruit["x_pos"] < 0 or fruit["y_pos"] < 0 :
-                fruit["y_v"] = -1000 * multipler2
+            if fruit["x_pos"] > 2200 or  fruit["y_pos"] > 1000 or fruit["x_pos"] < 0 or fruit["y_pos"] < 0 :
+                fruit["y_v"] = -900 * multipler2
                 fruit["x_v"] = random.randint(-300,300) 
-                fruit["x_pos"] , fruit["y_pos"] = random.randint(400,800) , 1000
+                fruit["x_pos"] , fruit["y_pos"] = random.randint(400,800) , 900
 
                 if fruit["name"] == "x2":
                      if fruit["x_pos"] > 2000 or  fruit["y_pos"] > 1100 or fruit["x_pos"] < 0 or fruit["y_pos"] < -100 :

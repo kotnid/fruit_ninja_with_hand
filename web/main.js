@@ -46,10 +46,10 @@ async function run(){
    
     if (urlParams.has('e_score')){
         const e_score = urlParams.get('e_score');
-        document.getElementById('score2').textContent = "Your enemy scored " + e_score +" marks!";
+        document.getElementById('score2').textContent = "Your enemy scored " + score +" marks!";
     }
 
-    document.getElementById('score').textContent = "You scored " + score +" marks!";
+    document.getElementById('score').textContent = "You scored " + e_score +" marks!";
     
 }
 
@@ -146,8 +146,11 @@ async function start2(){
     window.resizeTo(800, 600);
 
     var url = new URL(window.location.origin+"/end.html");
-    url.searchParams.append("score", results);
-    url.searchParams.append("e_score", enemy_result);
+    url.searchParams.append("score", enemy_result[0]);
+    url.searchParams.append("e_score", enemy_result[1]);
     console.log(url);
+    alert(enemy_result[0]);
+    alert(enemy_result[1]);
+    // alert(results+" "+enemy_result);
     location.href = url;
 }

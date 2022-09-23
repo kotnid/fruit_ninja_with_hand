@@ -46,10 +46,10 @@ async function run(){
    
     if (urlParams.has('e_score')){
         const e_score = urlParams.get('e_score');
-        document.getElementById('score2').textContent = "Your enemy scored " + score +" marks!";
+        document.getElementById('score2').textContent = "Your enemy scored " + e_score +" marks!";
     }
 
-    document.getElementById('score').textContent = "You scored " + e_score +" marks!";
+    document.getElementById('score').textContent = "You scored " + score +" marks!";
     
 }
 

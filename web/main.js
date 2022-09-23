@@ -149,8 +149,8 @@ async function start2(){
     url.searchParams.append("score", enemy_result[0]);
     url.searchParams.append("e_score", enemy_result[1]);
     console.log(url);
-    alert(enemy_result[0]);
-    alert(enemy_result[1]);
+    //alert(enemy_result[0]);
+    //alert(enemy_result[1]);
     // alert(results+" "+enemy_result);
     location.href = url;
 }
